@@ -3,9 +3,9 @@
 #Variables
 #these variables should be automatically correct
 DOMAIN=`hostname -d`
-IPA_SERVER=`dig _kerberos._udp.$DOMAIN. srv +noall +answer +short | awk '{print substr($4,0,(length($4)-1))}'` # resolves to something like tue.local
+IPA_SERVER=`dig _kerberos._udp.$DOMAIN. srv +noall +answer +short | awk '{print substr($4,0,(length($4)-1))}'` # resolves to something like foo.local
 REALM=`echo "${DOMAIN^^}"`
-BASEDN=`echo dc=${DOMAIN} | sed 's@\.@,dc=@'` #converts tue.local to "dc=tue,dc=local" and so on.....
+BASEDN=`echo dc=${DOMAIN} | sed 's@\.@,dc=@'` #converts foo.local to "dc=foo,dc=local" and so on.....
 FQDN=`hostname -f`
 
 if [ -z "${DOMAIN}" ]; then
