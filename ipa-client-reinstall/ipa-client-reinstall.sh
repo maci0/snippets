@@ -110,7 +110,7 @@ service certmonger restart
 chkconfig certmonger on
 
 ipa-getcert request -d /etc/pki/nssdb -n Server-Cert -K HOST/${FQDN} -N "CN="${FQDN}",O="${REALM}""
-authconfig --enablesssd --enablesssdauth --enablelocauthorize --update
+authconfig --enablesssd --enablesssdauth --enablelocauthorize --enablemkhomedir --update
 service sssd restart
 chkconfig sssd on
 
