@@ -36,8 +36,8 @@
 
 function analyze( ){
 	if [ "$1" != "" ]; then
-		for i in `objdump.exe -p $1 |grep "DLL Name:" |cut -d\: -f2|cut -d\  -f2|sort |uniq`; do
-			file=`which $i|grep -v WINDOWS`
+		for i in `/usr/bin/i686-w64-mingw32-objdump -p $1 |grep "DLL Name:" |cut -d\: -f2|cut -d\  -f2|sort |uniq`; do
+			file=`find /usr/i686-w64-mingw32 2>/dev/null |grep  $i |grep -v .dll.a`
 			echo $file
 			analyze $file
 		done
