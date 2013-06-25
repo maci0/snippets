@@ -1,25 +1,7 @@
-uri="ldap://127.0.0.1:2222"
+uri="ldapi://%2Ftmp%2Fmemdap.socket"
 suffix=`cat slapd.conf |grep suffix|cut -d\" -f2`
 rootdn=`cat slapd.conf |grep rootdn|cut -d\" -f2`
 rootpw=`grep rootpw slapd.conf|awk '{ print $2 }'`
-
-randint32 ()
-{
-random32=$(( ( ($RANDOM & 3)<<30 | $RANDOM<<15 | $RANDOM ) - 0x80000000 ))
-echo $random32
-}
-
-randstring ()
-{
-    chars="abcdefghijklmnopqrstuvwxyz0123456789"
-    for ((i=0; $i < 64; i++))
-    do        
-        pass+=${chars:$(($RANDOM % 36)):1}
-    done
-    
-    echo $pass
-}
-
 
 ldapadd -x -H ${uri} -D "${rootdn}" -w ${rootpw} <<_EOF
 dn: dc=example,dc=com
@@ -30,22 +12,20 @@ o: example com
 _EOF
 
 
-for i in {1..10000}
-do
-for i in {1..100}
-do
-echo "dn: cn=`randstring`,${suffix}
-cn: `randstring`
-uid: `randstring`
+END=100000000
+i=1 ; while [[ $i -le $END ]] ; do
+
+echo "dn: cn=${i},${suffix}
+cn: ${i}
+uid: ${i}
 objectClass: inetOrgPerson
 objectClass: posixAccount
-displayName: `randstring`
-givenName: `randstring`
-sn: `randstring`
-uidNumber: `randint32`
-gidNumber: `randint32`
-homeDirectory: /tmp" | ldapadd -x -H ${uri} -D ${rootdn} -w ${rootpw}  > /dev/null &
-done
-done
+displayName: ${i}
+givenName: ${i}
+sn: ${i}
+uidNumber: ${i}
+gidNumber: ${i}
+homeDirectory: /tmp"  | ldapadd -x -H ${uri} -D ${rootdn} -w ${rootpw}  > /dev/null
 
-
+    ((i = i + 1))
+done

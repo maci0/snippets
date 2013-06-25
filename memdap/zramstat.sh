@@ -9,5 +9,7 @@ for i in /sys/block/zram*; do
 	if [ $compr -gt 0 ]; then
 		ratio=$(echo "scale=2; $orig*100/$compr" | bc -q)
 	fi
-	echo -e "/dev/${i/*\/}:\t$ratio% ($orig -> $compr)"
+	echo -e "/dev/${i/*\/}:\t$ratio% ($orig -> $compr) || ($(($orig/1024/1024))M -> $(($compr/1024/1024))M)"
 done
+
+
