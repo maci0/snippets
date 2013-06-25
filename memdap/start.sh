@@ -4,7 +4,7 @@ SIZE=128 #megabytes
 echo $(($SIZE*1024*1024)) | sudo tee /sys/block/zram0/disksize
 sudo mkfs.xfs -f /dev/zram0
 sudo mount -t xfs /dev/zram0 ldif
-sudo chown marcel:marcel ldif/ -R
+sudo chown `whoami`:`whoami` ldif/ -R
 
 sleep 2
 
