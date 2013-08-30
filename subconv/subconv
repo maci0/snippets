@@ -1,0 +1,13 @@
+#!/bin/bash
+# subconv - converts all kinds of weird chinese subtitle formats to utf-8
+set -x
+
+#remove byte-order-mark
+awk '{if(NR==1)sub(/^\xef\xbb\xbf/,"");print}' "${1}" > /tmp/subconv.tmp
+
+CURRENT_ENCODING=`enca -L zh /tmp/subconv.tmp |head -n1 | cut -d\; -f2 |awk '{print($1)}'`
+recode $CURRENT_ENCODING..utf-8 /tmp/subconv.tmp
+enconv -L zh -x utf8 /tmp/subconv.tmp
+dos2unix /tmp/subconv.tmp
+
+mv /tmp/subconv.tmp "${1}"
