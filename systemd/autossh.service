@@ -1,0 +1,9 @@
+[Unit]
+Description=AutoSSH service for a reverse tunnel from some.example.com to localhost
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/autossh -M 0 -q -N -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" foo@bar.net -R :5522:some.example.com:2222
+
+[Install]some.example.com
+WantedBy=multi-user.target
