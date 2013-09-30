@@ -1,8 +1,8 @@
 #!/bin/sh
 
-ssh display@192.168.168.111 /home/display/killstale.sh
+ssh display@display.local /home/display/killstale.sh
 
-OUTPUT=`ssh -t display@192.168.168.111 /home/display/vnclistener.sh`
+OUTPUT=`ssh -t display@display.local /home/display/vnclistener.sh`
 PORT=`echo $OUTPUT | cut -d\: -f2`
 
-x11vnc -noclipboard -nosetclipboard -repeat -rfbport 0 -id pick -coe 192.168.168.111:$PORT -timeout 5
+x11vnc -noclipboard -nosetclipboard -repeat -rfbport 0 -id pick -coe display.local:$PORT -timeout 5
