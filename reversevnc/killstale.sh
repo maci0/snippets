@@ -1,4 +1,5 @@
 #!/bin/sh
+
 for PORT in `ps a -u display|grep vncviewer|grep -v grep |awk '{print $7}'`;
 do
 	netstat -antp 2>/dev/null | grep vncviewer | grep $PORT
@@ -7,5 +8,3 @@ do
 		kill -9 $STALE_PID
 	fi	
 done
-
-
