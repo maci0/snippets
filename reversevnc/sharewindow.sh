@@ -1,8 +1,9 @@
 #!/bin/sh
+set -x
+PORT=`ssh -t display@display.local /home/display/port.sh`
 
-ssh display@display.local /home/display/killstale.sh
+ssh -L ${PORT}:localhost:${PORT} display@display.local "DISPLAY=:0 vncviewer -listen ${PORT}" &
+ssh -t display@display.local "/home/display/waitport.sh ${PORT}"
 
-OUTPUT=`ssh -t display@display.local /home/display/vnclistener.sh`
-PORT=`echo $OUTPUT | cut -d\: -f2`
+x11vnc -rfbport 0 -noclipboard -nosetclipboard -repeat -timeout 15 -id pick -coe localhost:${PORT}
 
-x11vnc -noclipboard -nosetclipboard -repeat -rfbport 0 -id pick -coe display.local:$PORT -timeout 5
