@@ -1,6 +1,6 @@
 #!/bin/sh
-
 set -e
+
 OUTFILE=/etc/hosts
 
 SAVEIFS=$IFS
@@ -16,8 +16,7 @@ do
 
 done | sort > $OUTFILE
 
-echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
-::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" >> $OUTPUT
+echo -e "127.0.0.1 \t\tlocalhost localhost.localdomain localhost4 localhost4.localdomain4
+::1 \t\t\tlocalhost localhost.localdomain localhost6 localhost6.localdomain6" >> $OUTFILE
 
-
-
+exit 0
