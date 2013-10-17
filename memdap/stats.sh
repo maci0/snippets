@@ -20,6 +20,3 @@ echo -e "Uncompressed size:\t $((${orig}/1024/1024)) MB"
 echo -e "Compressed size:\t $((${compr}/1024/1024)) MB"
 echo -e "Compression ratio:\t ${ratio}%"
 echo -e "Fragmentation:\t\t `xfs_db -c frag -r /dev/zram0`"
-
-
-
