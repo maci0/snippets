@@ -1,4 +1,6 @@
-uri="ldapi://%2Ftmp%2Fmemdap.socket"
+#!/bin/sh
+
+uri="ldapi://%2Ftmp%2Fslapd.socket"
 suffix=`cat slapd.conf |grep suffix|cut -d\" -f2`
 rootdn=`cat slapd.conf |grep rootdn|cut -d\" -f2`
 rootpw=`grep rootpw slapd.conf|awk '{ print $2 }'`
