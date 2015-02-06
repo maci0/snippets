@@ -2,6 +2,7 @@
 IMAGE="fedora:21"
 PACKAGE=${1}
 PACKAGE_NAME=$(rpm -qp --queryformat "%{NAME}" ${PACKAGE})
+PACKAGE_BASENAME=$(basename ${PACKAGE})
 BUILD_DIR=$(mktemp -d /tmp/docker-rpmbuild.XXXXXXXXXXXX)
 mv ${BUILD_DIR} $(echo ${BUILD_DIR,,})
 BUILD_DIR=$(echo ${BUILD_DIR,,})
@@ -14,6 +15,8 @@ cd ${BUILD_DIR}
 echo ${BUILD_DIR}
 
 cat <<EOF > compile.sh
+#!/bin/bash
+set -e
 export CC="/usr/bin/ccache gcc"
 export CXX="/usr/bin/ccache g++"
 export CCACHE_DIR=/ccache
@@ -23,7 +26,7 @@ sed -i 's/keepcache=0/keepcache=1/' /etc/yum.conf
 yum -y install @buildsys-build yum-utils ccache
 ccache -M 8G
 
-rpm -i /${PACKAGE}
+rpm -i /${PACKAGE_BASENAME}
 
 yum-builddep -y /root/rpmbuild/SPECS/${PACKAGE_NAME}.spec
 yum -y upgrade
@@ -36,7 +39,7 @@ FROM ${IMAGE}
 VOLUME ["/ccache"]
 VOLUME ["/var/cache/yum"]
 ADD compile.sh /
-ADD ${PACKAGE} /
+ADD ${PACKAGE_BASENAME} /
 EOF
 
 sleep 1
